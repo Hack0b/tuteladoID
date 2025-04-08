@@ -11,10 +11,10 @@ pkColumnName="nombre_id", pkColumnValue="idVenta",
 valueColumnName="ultimo_valor_id",
 initialValue=0, allocationSize=1)
 
-// @NamedQueries ({
-// 	@NamedQuery (name="EntradaLog.recuperaPorCodigo",
-// 				 query="SELECT el FROM EntradaLog el where el.codigo=:codigo")
-// })
+@NamedQueries ({
+	@NamedQuery (name="Venta.recuperaPorCodigo",
+				 query="SELECT v FROM Venta v where v.codigo=:codigo")
+})
 
 @Entity
 public class Venta implements Comparable<Venta> {

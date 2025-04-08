@@ -7,6 +7,10 @@ pkColumnName="nombre_id", pkColumnValue="idVehiculo",
 valueColumnName="ultimo_valor_id",
 initialValue=0, allocationSize=1)
 
+@NamedQueries ({
+	@NamedQuery (name="Vehiculo.recuperaPorMatricula",
+				 query="SELECT car FROM Vehiculo car where car.matricula=:matricula")
+})
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)

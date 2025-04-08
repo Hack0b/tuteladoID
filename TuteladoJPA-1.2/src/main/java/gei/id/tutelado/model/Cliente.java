@@ -9,10 +9,11 @@ pkColumnName="nombre_id", pkColumnValue="idCliente",
 valueColumnName="ultimo_valor_id",
 initialValue=0, allocationSize=1)
 
-// @NamedQueries ({
-// 	@NamedQuery (name="Usuario.recuperaPorNif",
-// 				 query="SELECT u FROM Usuario u where u.nif=:nif")
-// })
+@NamedQueries ({
+	@NamedQuery (name="Cliente.recuperaPorDni",
+				 query="SELECT c FROM Cliente c where c.dni=:dni")
+})
+
 
 @Entity
 public class Cliente {
