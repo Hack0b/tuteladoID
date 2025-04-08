@@ -32,7 +32,7 @@ public class Cliente {
     @Column(nullable = false, unique=false)
     private int telefono;
      
-    //No sabemos que poner en el merge, si ON delete Cascade o no
+    //con persist cada vez que se guarde un cliente, tambien se guardarán sus ventas asociadas, y con remove al eliminarse el cliente se propaga de la misma forma con sus ventas
     @OneToMany (mappedBy="cliente", fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.REMOVE} )
     @OrderBy("fecha ASC")
     private SortedSet<Venta> ventas = new TreeSet<>();

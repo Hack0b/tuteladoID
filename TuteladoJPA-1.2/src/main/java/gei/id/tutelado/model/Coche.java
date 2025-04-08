@@ -24,10 +24,10 @@ public class Coche extends Vehiculo{
 
     @Column(nullable = false, unique = false)
     private float capacidad_maletero;
-    
+
     @ElementCollection
     @CollectionTable(name = "coche_extras", joinColumns = @JoinColumn(name = "id_vehiculo")) //El name en el JoinCoulmn no se si tiene que ser igual a la clave primaria de la tabla Vehiculo
-    @Column(name = "extra")
+    @Column(name = "extra", nullable = false) //Añadir nullable para asegurarse de que se cree la clave primaria en la tabla, lo dijo en clase
     private Set<String> extras = new HashSet<>();
 
     public int getNum_puertas() {
