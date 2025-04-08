@@ -24,13 +24,43 @@ public class Coche extends Vehiculo{
 
     @Column(nullable = false, unique = false)
     private float capacidad_maletero;
-
+    
     @ElementCollection
-    @CollectionTable(name = "coche_extras", joinColumns = @JoinColumn(name = "id_vehiculo"))
+    @CollectionTable(name = "coche_extras", joinColumns = @JoinColumn(name = "id_vehiculo")) //El name en el JoinCoulmn no se si tiene que ser igual a la clave primaria de la tabla Vehiculo
     @Column(name = "extra")
     private Set<String> extras = new HashSet<>();
 
+    public int getNum_puertas() {
+        return num_puertas;
+    }
 
+    public String getCombustible() {
+        return combustible;
+    }
+
+    public float getCapacidad_maletero() {
+        return capacidad_maletero;
+    }
+
+    public Set<String> getExtras() {
+        return extras;
+    }
+
+    public void setNum_puertas(int num_puertas) {
+        this.num_puertas = num_puertas;
+    }
+
+    public void setCombustible(String combustible) {
+        this.combustible = combustible;
+    }
+
+    public void setCapacidad_maletero(float capacidad_maletero) {
+        this.capacidad_maletero = capacidad_maletero;
+    }
+
+    public void setExtras(Set<String> extras) {
+        this.extras = extras;
+    }
 
 
 

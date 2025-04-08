@@ -36,8 +36,7 @@ public class Cliente {
     @OneToMany (mappedBy="cliente", fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.REMOVE} )
     @OrderBy("fecha ASC")
     private SortedSet<Venta> ventas = new TreeSet<>();
-    // NOTA: necesitamos @OrderBy, ainda que a colección estea definida como LAZY, por se nalgun momento accedemos á propiedade DENTRO de sesión.
-    // Garantimos así que cando Hibernate cargue a colección, o faga na orde axeitada na consulta que lanza contra a BD
+
 
     public Long getId() {
 		return id;
