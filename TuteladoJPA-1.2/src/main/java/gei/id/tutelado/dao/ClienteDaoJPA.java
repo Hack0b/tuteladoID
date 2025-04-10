@@ -77,16 +77,12 @@ public class ClienteDaoJPA implements ClienteDao {
 	@Override
 	public void elimina(Cliente client) {
 		try {
-			
 			em = emf.createEntityManager();
 			em.getTransaction().begin();
-
 			Cliente clientTmp = em.find (Cliente.class, client.getId());
 			em.remove (clientTmp);
-
 			em.getTransaction().commit();
-			em.close();
-			
+			em.close();		
 		} catch (Exception ex ) {
 			if (em!=null && em.isOpen()) {
 				if (em.getTransaction().isActive()) em.getTransaction().rollback();
@@ -99,17 +95,12 @@ public class ClienteDaoJPA implements ClienteDao {
 	/* MO4.4 */
 	@Override
 	public Cliente modifica(Cliente client) {
-
 		try {
-
 			em = emf.createEntityManager();
 			em.getTransaction().begin();
-
 			client= em.merge (client);
-
 			em.getTransaction().commit();
 			em.close();
-
 		} catch (Exception ex ) {
 			if (em!=null && em.isOpen()) {
 				if (em.getTransaction().isActive()) em.getTransaction().rollback();
@@ -123,28 +114,16 @@ public class ClienteDaoJPA implements ClienteDao {
 	/* MO4.5 */
 	@Override
 	public Cliente restauraVentas(Cliente client) {
-		// Devolve o obxecto user coa coleccion de entradas cargada (se non o estaba xa)
-
 		try {
 			em = emf.createEntityManager();
 			em.getTransaction().begin();
-
 			try {
 				client.getVentas().size();
 			} catch (Exception ex2) {
 				if (ex2 instanceof LazyInitializationException)
-
 				{
-					/* OPCION DE IMPLEMENTACION 1 (comentada): Cargar a propiedade "manualmente" cunha consulta, 
-					 *  e actualizar tamen "manualmente" o valor da propiedade  */  
-					//List<EntradaLog> entradas = (List<EntradaLog>) entityManager.createQuery("From EntradaLog l where l.usuario=:usuario order by dataHora").setParameter("usuario",user).getResultList();
-					//user.setEntradasLog (entradas);
-
-					/* OPCION DE IMPLEMENTACIÓN 2: Volver a ligar o obxecto usuario a un novo CP, 
-					 * e acceder á propiedade nese momento, para que Hibernate a cargue.*/
 					client = em.merge(client);
 					client.getVentas().size();
-
 				} else {
 					throw ex2;
 				}
@@ -159,9 +138,69 @@ public class ClienteDaoJPA implements ClienteDao {
 				throw(ex);
 			}
 		}
-		
 		return (client);
-
 	}
 
+	/* MO4.6 b*/
+	@Override
+	public List<Cliente> recuperaSinVentas() {
+		List <Cliente> clientes=new ArrayList<>();
+		try {
+			em = emf.createEntityManager();
+			em.getTransaction().begin();
+			clientes = em.createQuery("SELECT c FROM Cliente c LEFT JOIN c.ventas v WHERE v IS NULL", Cliente.class).getResultList();
+			em.getTransaction().commit();
+			em.close();
+		}
+		catch (Exception ex ) {
+			if (em!=null && em.isOpen()) {
+				if (em.getTransaction().isActive()) em.getTransaction().rollback();
+				em.close();
+				throw(ex);
+			}
+		}
+		return clientes;
+	}
+
+	/* MO4.6 c*/
+	@Override
+	public List<Cliente> recuperaPrecioVehiculos(float precio) {
+		List <Cliente> clientes=new ArrayList<>();
+		try {
+			em = emf.createEntityManager();
+			em.getTransaction().begin();
+			clientes = em.createQuery("SELECT c FROM Cliente c WHERE(SELCT AVG(ve.precio) FROM Venta v JOIN v.vehiculos ve WHERE v.cliente = c) >= :precio", Cliente.class).setParameter("precio", precio).getResultList();
+			em.getTransaction().commit();
+			em.close();
+		}
+		catch (Exception ex ) {
+			if (em!=null && em.isOpen()) {
+				if (em.getTransaction().isActive()) em.getTransaction().rollback();
+				em.close();
+				throw(ex);
+			}
+		}
+		return clientes;
+	}
+
+	/* MO4.6 d*/
+	@Override
+	public List<Cliente> recuperaNumVehiculos(int numVehiculos) {
+		List <Cliente> clientes=new ArrayList<>();
+		try {
+			em = emf.createEntityManager();
+			em.getTransaction().begin();
+			clientes = em.createQuery("SELECT c FROM Cliente c JOIN c.ventas v JOIN v.vehiculos ve GROUP BY c HAVING COUNT(ve) >= :numVehiculos", Cliente.class).setParameter("numVehiculos", numVehiculos).getResultList();
+			em.getTransaction().commit();
+			em.close();
+		}
+		catch (Exception ex ) {
+			if (em!=null && em.isOpen()) {
+				if (em.getTransaction().isActive()) em.getTransaction().rollback();
+				em.close();
+				throw(ex);
+			}
+		}
+		return clientes;
+	}
 }

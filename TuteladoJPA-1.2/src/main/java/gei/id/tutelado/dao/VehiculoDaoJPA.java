@@ -7,14 +7,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import gei.id.tutelado.configuracion.Configuracion;
-import gei.id.tutelado.model.Cliente;
-import gei.id.tutelado.model.Venta;
+import gei.id.tutelado.model.Vehiculo;
 
-public class VentaDaoJPA implements VentaDao {
+
+public class VehiculoDaoJPA implements VehiculoDao {
 
 	private EntityManagerFactory emf; 
 	private EntityManager em;
-    
+
 	@Override
 	public void setup (Configuracion config) {
 		this.emf = (EntityManagerFactory) config.get("EMF");
@@ -23,42 +23,43 @@ public class VentaDaoJPA implements VentaDao {
 
 	/* MO4.1 */
 	@Override
-	public Venta recuperaPorCodigo(String codigo) {
-
-		List<Venta> entradas= new ArrayList<>();
+	public Vehiculo recuperaPorMatricula(String matricula) {
+		List <Vehiculo> vehiculos=new ArrayList<>();
 
 		try {
 			em = emf.createEntityManager();
 			em.getTransaction().begin();
 
-			entradas = em.createNamedQuery("Venta.recuperaPorCodigo", Venta.class)
-					.setParameter("codigo", codigo).getResultList();
+			vehiculos = em.createNamedQuery("Vehiculo.recuperaPorMatricula", Vehiculo.class).setParameter("matricula", matricula).getResultList();
 
 			em.getTransaction().commit();
 			em.close();
-		} catch (Exception ex ) {
+
+		}
+		catch (Exception ex ) {
 			if (em!=null && em.isOpen()) {
 				if (em.getTransaction().isActive()) em.getTransaction().rollback();
 				em.close();
 				throw(ex);
 			}
 		}
-		return (entradas.isEmpty()?null:entradas.get(0));
+
+		return (vehiculos.isEmpty()?null:vehiculos.get(0));
 	}
 
 	/* MO4.2 */
 	@Override
-	public Venta almacena(Venta venta) {
+	public Vehiculo almacena(Vehiculo vehiculo) {
+
 		try {
-				
 			em = emf.createEntityManager();
 			em.getTransaction().begin();
 
-			em.persist(venta);
+			em.persist(vehiculo);
 
 			em.getTransaction().commit();
 			em.close();
-		
+
 		} catch (Exception ex ) {
 			if (em!=null && em.isOpen()) {
 				if (em.getTransaction().isActive()) em.getTransaction().rollback();
@@ -66,23 +67,22 @@ public class VentaDaoJPA implements VentaDao {
 				throw(ex);
 			}
 		}
-		return venta;
+		return vehiculo;
 	}
+
 
 	/* MO4.3 */
 	@Override
-	public void elimina(Venta venta) {
+	public void elimina(Vehiculo vehiculo) {
 		try {
-
 			em = emf.createEntityManager();
 			em.getTransaction().begin();
 
-			Venta ventaTmp = em.find (Venta.class, venta.getId());
-			em.remove (ventaTmp);
+			Vehiculo clientTmp = em.find (Vehiculo.class, vehiculo.getId());
+			em.remove (clientTmp);
 
 			em.getTransaction().commit();
 			em.close();
-
 		} catch (Exception ex ) {
 			if (em!=null && em.isOpen()) {
 				if (em.getTransaction().isActive()) em.getTransaction().rollback();
@@ -94,17 +94,18 @@ public class VentaDaoJPA implements VentaDao {
 
 	/* MO4.4 */
 	@Override
-	public Venta modifica(Venta venta) {
+	public Vehiculo modifica(Vehiculo vehiculo) {
+
 		try {
 
-			em = emf.createEntityManager();		
+			em = emf.createEntityManager();
 			em.getTransaction().begin();
 
-			venta = em.merge (venta);
+			vehiculo= em.merge (vehiculo);
 
 			em.getTransaction().commit();
 			em.close();
-			
+
 		} catch (Exception ex ) {
 			if (em!=null && em.isOpen()) {
 				if (em.getTransaction().isActive()) em.getTransaction().rollback();
@@ -112,27 +113,6 @@ public class VentaDaoJPA implements VentaDao {
 				throw(ex);
 			}
 		}
-		return venta;
-	}
-
-	/* MO4.6.a */
-	@Override
-	public List<Venta> recuperaTodasCliente(Cliente client) {
-		List <Venta> ventas=null;
-		try {
-			em = emf.createEntityManager();
-			em.getTransaction().begin();
-			ventas = em.createQuery("SELECT e FROM Cliente c JOIN c.ventas e WHERE c=:c ORDER BY e.fecha DESC", Venta.class).setParameter("c", client).getResultList();
-			em.getTransaction().commit();
-			em.close();	
-		}
-		catch (Exception ex ) {
-			if (em!=null && em.isOpen()) {
-				if (em.getTransaction().isActive()) em.getTransaction().rollback();
-				em.close();
-				throw(ex);
-			}
-		}
-		return ventas;
+		return (vehiculo);
 	}
 }

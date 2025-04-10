@@ -10,13 +10,11 @@ public interface VentaDao {
     
 	void setup (Configuracion config);
 	
-	// OPERACIONS CRUD BASICAS
-	/* MO4.1 */ Venta recuperaPorCodigo (String codigo);
-	/* MO4.2 */ Venta almacena (Venta venta);
-	/* MO4.3 */ void elimina (Venta venta);
-	/* MO4.4 */ Venta modifica (Venta venta);
+	Venta recuperaPorCodigo (String codigo);
+	Venta almacena (Venta venta);
+	void elimina (Venta venta);
+	Venta modifica (Venta venta);
 
-	// CONSULTAS JPQL
-	/* MO4.6.a */ List<Venta> recuperaTodasCliente(Cliente client);
+	List<Venta> recuperaTodasCliente(Cliente client);
 
 }

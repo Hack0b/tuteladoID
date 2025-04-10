@@ -1,6 +1,16 @@
 package gei.id.tutelado.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.TableGenerator;
 
 @TableGenerator(name="generadorIdsVehiculo", table="tabla_ids",
 pkColumnName="nombre_id", pkColumnValue="idVehiculo",
@@ -17,7 +27,7 @@ initialValue=0, allocationSize=1)
 @DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 public abstract class Vehiculo {
     @Id
-    @GeneratedValue(generator="generadorIdsVenta")
+    @GeneratedValue(generator="generadorIdsVehiculo")
     private Long id;
 
     @Column(unique = true, nullable = false)
