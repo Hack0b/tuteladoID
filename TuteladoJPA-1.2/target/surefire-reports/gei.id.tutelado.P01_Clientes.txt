@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: gei.id.tutelado.P01_Clientes
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.056 s -- in gei.id.tutelado.P01_Clientes

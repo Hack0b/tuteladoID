@@ -16,6 +16,6 @@ public interface ClienteDao {
 
 	Cliente restauraVentas (Cliente client);
 	List<Cliente> recuperaSinVentas ();
-	List<Cliente> recuperaPrecioVehiculos (float precio);
-	List<Cliente> recuperaNumVehiculos (int numVehiculos);
+	List<Cliente> recuperaPrecioVehiculos (Double precio);
+	List<Cliente> recuperaNumVehiculos (Long numVehiculos);
 }

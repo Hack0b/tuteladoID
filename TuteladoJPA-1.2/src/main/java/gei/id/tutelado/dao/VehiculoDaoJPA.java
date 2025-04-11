@@ -8,6 +8,7 @@ import javax.persistence.EntityManagerFactory;
 
 import gei.id.tutelado.configuracion.Configuracion;
 import gei.id.tutelado.model.Vehiculo;
+import gei.id.tutelado.model.Venta;
 
 
 public class VehiculoDaoJPA implements VehiculoDao {
@@ -78,8 +79,13 @@ public class VehiculoDaoJPA implements VehiculoDao {
 			em = emf.createEntityManager();
 			em.getTransaction().begin();
 
-			Vehiculo clientTmp = em.find (Vehiculo.class, vehiculo.getId());
-			em.remove (clientTmp);
+			Vehiculo vehiculoTmp = em.find (Vehiculo.class, vehiculo.getId());
+			List<Venta> ventas = em.createQuery("SELECT v FROM Venta v JOIN v.vehiculos ve WHERE ve = :vehiculo", Venta.class).setParameter("vehiculo", vehiculoTmp).getResultList();
+			for (Venta venta : ventas) {
+				venta.getVehiculos().remove(vehiculoTmp);
+				em.merge(venta); // Actualizar la relación en la base de datos
+			}
+			em.remove (vehiculoTmp);
 
 			em.getTransaction().commit();
 			em.close();

@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: gei.id.tutelado.P04_Consultas
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 22.29 s -- in gei.id.tutelado.P04_Consultas

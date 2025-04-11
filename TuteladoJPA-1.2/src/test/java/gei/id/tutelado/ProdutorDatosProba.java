@@ -24,8 +24,7 @@ public class ProdutorDatosProba {
 	public Venta vc1A, vc1B;
 	public List<Venta> listaVentas;
 
-	public Coche ve1, ve3;
-    public Moto ve2, ve4;
+	public Vehiculo ve1, ve2, ve3, ve4;
 	public List<Vehiculo> listaVehiculos;
 	
 	public void Setup (Configuracion config) {
@@ -65,45 +64,49 @@ public class ProdutorDatosProba {
     }
 
 	public void creaVehiculosSueltos() {
-        this.ve1 = new Coche();
-        this.ve1.setMatricula("1234ABC");
-        this.ve1.setMarca("Toyota");
-        this.ve1.setModelo("Corolla");
-        this.ve1.setColor("Negro");
-        this.ve1.setPrecio(18000);
-        this.ve1.setNum_puertas(5);
-        this.ve1.setCombustible("Gasolina");
-        this.ve1.setCapacidad_maletero(400);
+        Coche tmp1 = new Coche();
+        tmp1.setMatricula("1234ABC");
+        tmp1.setMarca("Toyota");
+        tmp1.setModelo("Corolla");
+        tmp1.setColor("Negro");
+        tmp1.setPrecio(18000);
+        tmp1.setNum_puertas(5);
+        tmp1.setCombustible("Gasolina");
+        tmp1.setCapacidad_maletero(400);
+		ve1 = tmp1;
 
-        this.ve3 = new Coche();
-        this.ve3.setMatricula("9999ABV");
-        this.ve3.setMarca("Honda");
-        this.ve3.setModelo("Civic");
-        this.ve3.setColor("Azul");
-        this.ve3.setPrecio(20000);
-        this.ve3.setNum_puertas(3);
-        this.ve3.setCombustible("Diesel");
-        this.ve3.setCapacidad_maletero(350);
+        Coche tmp3 = new Coche();
+        tmp3.setMatricula("9999ABV");
+        tmp3.setMarca("Honda");
+        tmp3.setModelo("Civic");
+        tmp3.setColor("Azul");
+        tmp3.setPrecio(20000);
+        tmp3.setNum_puertas(3);
+        tmp3.setCombustible("Diesel");
+        tmp3.setCapacidad_maletero(350);
+		ve3 = tmp3;
 
-        this.ve2 = new Moto();
-        this.ve2.setMatricula("2345BCD");
-        this.ve2.setMarca("Honda");
-        this.ve2.setModelo("CB1000R");
-        this.ve2.setColor("Rojo");
-        this.ve2.setPrecio(6000);
-        this.ve2.setCilindrada(998);
-        this.ve2.setTipoMotor("Motor de dos tiempos");
-        this.ve2.setBaul(false);
+        Moto tmp2 = new Moto();
+        tmp2.setMatricula("2345BCD");
+        tmp2.setMarca("Honda");
+        tmp2.setModelo("CB1000R");
+    	tmp2.setColor("Rojo");
+        tmp2.setPrecio(6000);
+        tmp2.setCilindrada(998);
+        tmp2.setTipoMotor("Motor de dos tiempos");
+        tmp2.setBaul(false);
+		ve2 = tmp2;
 
-        this.ve4 = new Moto();
-        this.ve4.setMatricula("9999BCD");
-        this.ve4.setMarca("Ducati");
-        this.ve4.setModelo("DesertX");
-        this.ve4.setColor("Blanco");
-        this.ve4.setPrecio(9000);
-        this.ve4.setCilindrada(937 );
-        this.ve4.setTipoMotor("Bicilíndrico en V a 90º");
-        this.ve4.setBaul(true);
+        Moto tmp4 = new Moto();
+        tmp4.setMatricula("9999BCD");
+        tmp4.setMarca("Ducati");
+        tmp4.setModelo("DesertX");
+        tmp4.setColor("Blanco");
+        tmp4.setPrecio(9000);
+        tmp4.setCilindrada(937 );
+        tmp4.setTipoMotor("Bicilíndrico en V a 90º");
+        tmp4.setBaul(true);
+		ve4 = tmp4;
 
         this.listaVehiculos = new ArrayList<Vehiculo> ();
         this.listaVehiculos.add(0,ve1);
@@ -163,8 +166,8 @@ public class ProdutorDatosProba {
 			Iterator <Vehiculo> itVe = em.createQuery("SELECT ve from Vehiculo ve", Vehiculo.class).getResultList().iterator();
 			while (itVe.hasNext()) em.remove(itVe.next());		
 			
-			em.createNativeQuery("UPDATE taboa_ids SET ultimo_valor_id=0 WHERE nome_id='idCliente'" ).executeUpdate();
-			em.createNativeQuery("UPDATE taboa_ids SET ultimo_valor_id=0 WHERE nome_id='idVehiculo'" ).executeUpdate();
+			em.createNativeQuery("UPDATE tabla_ids SET ultimo_valor_id=0 WHERE nombre_id='idCliente'" ).executeUpdate();
+			em.createNativeQuery("UPDATE tabla_ids SET ultimo_valor_id=0 WHERE nombre_id='idVehiculo'" ).executeUpdate();
 
 			em.getTransaction().commit();
 			em.close();

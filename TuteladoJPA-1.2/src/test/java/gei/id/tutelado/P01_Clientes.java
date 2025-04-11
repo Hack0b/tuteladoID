@@ -1,12 +1,7 @@
 package gei.id.tutelado;
 
-import gei.id.tutelado.configuracion.ConfiguracionJPA;
-import gei.id.tutelado.configuracion.Configuracion;
-import gei.id.tutelado.dao.UsuarioDao;
-import gei.id.tutelado.dao.UsuarioDaoJPA;
-import gei.id.tutelado.model.Usuario;
-
-//import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -14,25 +9,28 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Rule;
-import org.junit.runners.MethodSorters;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 import org.junit.rules.TestWatcher;
 import org.junit.runner.Description;
+import org.junit.runners.MethodSorters;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import gei.id.tutelado.configuracion.Configuracion;
+import gei.id.tutelado.configuracion.ConfiguracionJPA;
+import gei.id.tutelado.dao.ClienteDao;
+import gei.id.tutelado.dao.ClienteDaoJPA;
+import gei.id.tutelado.model.Cliente;
 
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class P01_Usuarios {
+public class P01_Clientes {
 
     private Logger log = LogManager.getLogger("gei.id.tutelado");
 
     private static ProdutorDatosProba produtorDatos = new ProdutorDatosProba();
     
     private static Configuracion cfg;
-    private static UsuarioDao usuDao;
+    private static ClienteDao cliDao;
     
     @Rule
     public TestRule watcher = new TestWatcher() {
@@ -55,8 +53,8 @@ public class P01_Usuarios {
     	cfg = new ConfiguracionJPA();
     	cfg.start();
 
-    	usuDao = new UsuarioDaoJPA();
-    	usuDao.setup(cfg);
+    	cliDao = new ClienteDaoJPA();
+    	cliDao.setup(cfg);
     	
     	produtorDatos = new ProdutorDatosProba();
     	produtorDatos.Setup(cfg);
@@ -70,7 +68,7 @@ public class P01_Usuarios {
 	@Before
 	public void setUp() throws Exception {		
 		log.info("");	
-		log.info("Limpando BD --------------------------------------------------------------------------------------------");
+		log.info("Limpiando BD --------------------------------------------------------------------------------------------");
 		produtorDatos.limpaBD();
 	}
 
@@ -81,57 +79,54 @@ public class P01_Usuarios {
     @Test
     public void test01_Recuperacion() {
     	
-    	Usuario u;
+    	Cliente c;
     	
     	log.info("");	
-		log.info("Configurando situación de partida do test -----------------------------------------------------------------------");
+		log.info("Configurando situación de partida del test -----------------------------------------------------------------------");
 
-		produtorDatos.creaUsuariosSoltos();
-    	produtorDatos.gravaUsuarios();
+		produtorDatos.creaClientesSueltos();
+    	produtorDatos.gravaClientes();
     	
     	log.info("");	
-		log.info("Inicio do test --------------------------------------------------------------------------------------------------");
-    	log.info("Obxectivo: Proba de recuperación desde a BD de usuario (sen entradas asociadas) por nif\n"   
+		log.info("Inicio del test --------------------------------------------------------------------------------------------------");
+    	log.info("Objectivo: Prueba de recuperación desde la BD de cliente (sin ventas asociadas) por dni\n"   
     			+ "\t\t\t\t Casos contemplados:\n"
-    			+ "\t\t\t\t a) Recuperación por nif existente\n"
-    			+ "\t\t\t\t b) Recuperacion por nif inexistente\n");
+    			+ "\t\t\t\t a) Recuperación por dni existente\n"
+    			+ "\t\t\t\t b) Recuperacion por dni inexistente\n");
 
     	// Situación de partida:
     	// u0 desligado    	
 
-    	log.info("Probando recuperacion por nif EXISTENTE --------------------------------------------------");
+    	log.info("Probando recuperacion por dni EXISTENTE --------------------------------------------------");
 
-    	u = usuDao.recuperaPorNif(produtorDatos.u0.getNif());
-    	Assert.assertEquals(produtorDatos.u0.getNif(),      u.getNif());
-    	Assert.assertEquals(produtorDatos.u0.getNome(),     u.getNome());
-    	Assert.assertEquals(produtorDatos.u0.getDataAlta(), u.getDataAlta());
+    	c = cliDao.recuperaPorDni(produtorDatos.c1.getdni());
+    	Assert.assertEquals(produtorDatos.c1.getdni(),      c.getdni());
+    	Assert.assertEquals(produtorDatos.c1.getNombre(),     c.getNombre());
+    	Assert.assertEquals(produtorDatos.c1.getDireccion(), c.getDireccion());
+		Assert.assertEquals(produtorDatos.c1.getTelefono(),  c.getTelefono());
 
     	log.info("");	
-		log.info("Probando recuperacion por nif INEXISTENTE -----------------------------------------------");
+		log.info("Probando recuperacion por dni INEXISTENTE -----------------------------------------------");
     	
-    	u = usuDao.recuperaPorNif("iwbvyhuebvuwebvi");
-    	Assert.assertNull (u);
-
+    	c = cliDao.recuperaPorDni("iwbvyhuebvuwebvi");
+    	Assert.assertNull (c);
     } 	
 
     @Test 
     public void test02_Alta() {
 
     	log.info("");	
-		log.info("Configurando situación de partida do test -----------------------------------------------------------------------");
+		log.info("Configurando situación de partida ddel test -----------------------------------------------------------------------");
   
-		produtorDatos.creaUsuariosSoltos();
+		produtorDatos.creaClientesSueltos();
     	
     	log.info("");	
-		log.info("Inicio do test --------------------------------------------------------------------------------------------------");
-    	log.info("Obxectivo: Proba de gravación na BD de novo usuario (sen entradas de log asociadas)\n");
+		log.info("Inicio del test --------------------------------------------------------------------------------------------------");
+    	log.info("Obetivo: Prueba de gravación en la BD de nuevo cliente (sin ventas asociadas)\n");
     	
-    	// Situación de partida:
-    	// u0 transitorio    	
-    	
-    	Assert.assertNull(produtorDatos.u0.getId());
-    	usuDao.almacena(produtorDatos.u0);    	
-    	Assert.assertNotNull(produtorDatos.u0.getId());
+    	Assert.assertNull(produtorDatos.c1.getId());
+    	cliDao.almacena(produtorDatos.c1);   	
+    	Assert.assertNotNull(produtorDatos.c1.getId());
     }
     
     @Test 
@@ -140,51 +135,44 @@ public class P01_Usuarios {
     	log.info("");	
 		log.info("Configurando situación de partida do test -----------------------------------------------------------------------");
 
-		produtorDatos.creaUsuariosSoltos();
-    	produtorDatos.gravaUsuarios();
+		produtorDatos.creaClientesSueltos();
+    	produtorDatos.gravaClientes();
 
-    	
     	log.info("");	
-		log.info("Inicio do test --------------------------------------------------------------------------------------------------");
-    	log.info("Obxectivo: Proba de eliminación da BD de usuario sen entradas asociadas\n");   
+		log.info("Inicio del test --------------------------------------------------------------------------------------------------");
+    	log.info("Objetivo: Prueba de eliminación de la BD de cliente sin ventas asociadas\n");   
  
-    	// Situación de partida:
-    	// u0 desligado  
-
-    	Assert.assertNotNull(usuDao.recuperaPorNif(produtorDatos.u0.getNif()));
-    	usuDao.elimina(produtorDatos.u0);    	
-    	Assert.assertNull(usuDao.recuperaPorNif(produtorDatos.u0.getNif()));
+    	Assert.assertNotNull(cliDao.recuperaPorDni(produtorDatos.c1.getdni()));
+    	cliDao.elimina(produtorDatos.c1);    	
+    	Assert.assertNull(cliDao.recuperaPorDni(produtorDatos.c1.getdni()));
     } 	
 
     @Test 
     public void test04_Modificacion() {
     	
-    	Usuario u1, u2;
-    	String novoNome;
+    	Cliente c1, c2;
+    	String nuevoNombre;
     	
     	log.info("");	
-		log.info("Configurando situación de partida do test -----------------------------------------------------------------------");
+		log.info("Configurando situación de partida del test -----------------------------------------------------------------------");
 
-		produtorDatos.creaUsuariosSoltos();
-    	produtorDatos.gravaUsuarios();
+		produtorDatos.creaClientesSueltos();
+    	produtorDatos.gravaClientes();
 
     	log.info("");	
-		log.info("Inicio do test --------------------------------------------------------------------------------------------------");
-    	log.info("Obxectivo: Proba de modificación da información básica dun usuario sen entradas de log\n");
+		log.info("Inicio del test --------------------------------------------------------------------------------------------------");
+    	log.info("Objetivo: Prueba de modificación de la información básica de un cliente sin ventas\n");
 
-    	// Situación de partida:
-    	// u0 desligado  
+		nuevoNombre = new String ("Nombre nuevo");
 
-		novoNome = new String ("Nome novo");
+		c1 = cliDao.recuperaPorDni(produtorDatos.c1.getdni());
+		Assert.assertNotEquals(nuevoNombre, c1.getNombre());
+    	c1.setNombre(nuevoNombre);
 
-		u1 = usuDao.recuperaPorNif(produtorDatos.u0.getNif());
-		Assert.assertNotEquals(novoNome, u1.getNome());
-    	u1.setNome(novoNome);
-
-    	usuDao.modifica(u1);    	
+    	cliDao.modifica(c1);    	
     	
-		u2 = usuDao.recuperaPorNif(produtorDatos.u0.getNif());
-		Assert.assertEquals (novoNome, u2.getNome());
+		c2 = cliDao.recuperaPorDni(produtorDatos.c1.getdni());
+		Assert.assertEquals (nuevoNombre, c2.getNombre());
 
     } 	
     /*

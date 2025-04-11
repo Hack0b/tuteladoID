@@ -164,12 +164,12 @@ public class ClienteDaoJPA implements ClienteDao {
 
 	/* MO4.6 c*/
 	@Override
-	public List<Cliente> recuperaPrecioVehiculos(float precio) {
+	public List<Cliente> recuperaPrecioVehiculos(Double precio) {
 		List <Cliente> clientes=new ArrayList<>();
 		try {
 			em = emf.createEntityManager();
 			em.getTransaction().begin();
-			clientes = em.createQuery("SELECT c FROM Cliente c WHERE(SELCT AVG(ve.precio) FROM Venta v JOIN v.vehiculos ve WHERE v.cliente = c) >= :precio", Cliente.class).setParameter("precio", precio).getResultList();
+			clientes = em.createQuery("SELECT c FROM Cliente c WHERE(SELECT AVG(ve.precio) FROM Venta v JOIN v.vehiculos ve WHERE v.cliente = c) >= :precio", Cliente.class).setParameter("precio", precio).getResultList();
 			em.getTransaction().commit();
 			em.close();
 		}
@@ -185,7 +185,7 @@ public class ClienteDaoJPA implements ClienteDao {
 
 	/* MO4.6 d*/
 	@Override
-	public List<Cliente> recuperaNumVehiculos(int numVehiculos) {
+	public List<Cliente> recuperaNumVehiculos(Long numVehiculos) {
 		List <Cliente> clientes=new ArrayList<>();
 		try {
 			em = emf.createEntityManager();

@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: gei.id.tutelado.P03_Vehiculos
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 25.33 s -- in gei.id.tutelado.P03_Vehiculos
