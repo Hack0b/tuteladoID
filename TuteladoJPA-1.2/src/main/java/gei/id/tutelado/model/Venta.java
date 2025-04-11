@@ -32,8 +32,8 @@ public class Venta implements Comparable<Venta> {
     @JoinColumn (nullable=false, unique=false)
     private Cliente cliente;
 
-    @ManyToMany
-    @JoinTable (name = "t_vehiculo_venta",
+    @ManyToMany(cascade={CascadeType.PERSIST})
+    @JoinTable(name = "t_vehiculo_venta",
         joinColumns = @JoinColumn(name = "id_venta"),
         inverseJoinColumns = @JoinColumn(name = "id_vehiculo"))
     private Set<Vehiculo> vehiculos = new HashSet<Vehiculo>();
@@ -76,6 +76,14 @@ public class Venta implements Comparable<Venta> {
 
     public void setVehiculos(Set<Vehiculo> vehiculos) {
         this.vehiculos = vehiculos;
+    }
+
+	public void anadirVehiculo(Vehiculo vehiculo) {
+        this.vehiculos.add(vehiculo);
+    }
+
+    public void eliminarVehiculo(Vehiculo vehiculo) {
+        this.vehiculos.remove(vehiculo);
     }
 
 	@Override

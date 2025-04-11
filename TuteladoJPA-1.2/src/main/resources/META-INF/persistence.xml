@@ -14,8 +14,11 @@
 	        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
 	 		<!-- Entity classes --> 
-	        <class>gei.id.tutelado.model.Usuario</class>
-	        <class>gei.id.tutelado.model.EntradaLog</class>
+	        <class>gei.id.tutelado.model.Cliente</class>
+            <class>gei.id.tutelado.model.Venta</class>
+            <class>gei.id.tutelado.model.Vehiculo</class>
+            <class>gei.id.tutelado.model.Coche</class>
+            <class>gei.id.tutelado.model.Moto</class>
 	        <exclude-unlisted-classes>true</exclude-unlisted-classes>
 
 	        <properties>
@@ -43,4 +46,3 @@
 
 
 </persistence>
-

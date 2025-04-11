@@ -1,8 +1,6 @@
 package gei.id.tutelado;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -20,87 +18,127 @@ public class ProdutorDatosProba {
 	
 	private EntityManagerFactory emf=null;
 	
-	public Usuario u0, u1;
-	public List<Usuario> listaxeU;
+	public Cliente c1, c2;
+	public List<Cliente> listaClientes;
 	
-	public EntradaLog e1A, e1B;
-	public List<EntradaLog> listaxeE;
-	
-	
+	public Venta vc1A, vc1B;
+	public List<Venta> listaVentas;
+
+	public Coche ve1, ve3;
+    public Moto ve2, ve4;
+	public List<Vehiculo> listaVehiculos;
 	
 	public void Setup (Configuracion config) {
 		this.emf=(EntityManagerFactory) config.get("EMF");
 	}
 	
-	public void creaUsuariosSoltos() {
+	public void creaClientesSueltos() {
+		this.c1 = new Cliente();
+        this.c1.setDni("000A");
+        this.c1.setNombre("Usuario uno");
+		this.c1.setDireccion("Calle de ejemplo 1");
+		this.c1.setTelefono(123456789);
 
-		// Crea dous usuarios EN MEMORIA: u0, u1
-		// SEN entradas de log
-		
-		this.u0 = new Usuario();
-        this.u0.setNif("000A");
-        this.u0.setNome("Usuario cero");
-        this.u0.setDataAlta(LocalDate.now());
+        this.c2 = new Cliente();
+        this.c2.setDni("111B");
+        this.c2.setNombre("Usuario dos");
+		this.c2.setDireccion("Calle de ejemplo 2");
+		this.c2.setTelefono(987654321);
 
-        this.u1 = new Usuario();
-        this.u1.setNif("111B");
-        this.u1.setNome("Usuaria un");
-        this.u1.setDataAlta(LocalDate.now());
-
-        this.listaxeU = new ArrayList<Usuario> ();
-        this.listaxeU.add(0,u0);
-        this.listaxeU.add(1,u1);        
-
+        this.listaClientes = new ArrayList<Cliente> ();
+        this.listaClientes.add(0,c1);
+        this.listaClientes.add(1,c2);        
 	}
 	
-	public void creaEntradasLogSoltas () {
+	public void creaVentasSueltas() {
+        this.vc1A = new Venta();
+        this.vc1A.setCodigo("028408AG83V97");;
+        this.vc1A.setFecha(LocalDateTime.now());
 
-		// Crea duas entradas de log EN MEMORIA: e1a, e1b
-		// Sen usuario asignado (momentaneamente)
-		
-		this.e1A=new EntradaLog();
-        this.e1A.setCodigo("E001");
-        this.e1A.setDescricion ("Modificado contrasinal por defecto");
-        this.e1A.setDataHora(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+        this.vc1B = new Venta();
+        this.vc1B.setCodigo("028408AG83V98");;
+        this.vc1B.setFecha(LocalDateTime.now());
 
-        this.e1B=new EntradaLog();
-        this.e1B.setCodigo("E002");
-        this.e1B.setDescricion ("Acceso a zona reservada");
-        this.e1B.setDataHora(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+        this.listaVentas = new ArrayList<Venta> ();
+        this.listaVentas.add(0,vc1A);
+        this.listaVentas.add(1,vc1B);
+    }
 
-        this.listaxeE = new ArrayList<EntradaLog> ();
-        this.listaxeE.add(0,this.e1A);
-        this.listaxeE.add(1,this.e1B);        
+	public void creaVehiculosSueltos() {
+        this.ve1 = new Coche();
+        this.ve1.setMatricula("1234ABC");
+        this.ve1.setMarca("Toyota");
+        this.ve1.setModelo("Corolla");
+        this.ve1.setColor("Negro");
+        this.ve1.setPrecio(18000);
+        this.ve1.setNum_puertas(5);
+        this.ve1.setCombustible("Gasolina");
+        this.ve1.setCapacidad_maletero(400);
 
+        this.ve3 = new Coche();
+        this.ve3.setMatricula("9999ABV");
+        this.ve3.setMarca("Honda");
+        this.ve3.setModelo("Civic");
+        this.ve3.setColor("Azul");
+        this.ve3.setPrecio(20000);
+        this.ve3.setNum_puertas(3);
+        this.ve3.setCombustible("Diesel");
+        this.ve3.setCapacidad_maletero(350);
+
+        this.ve2 = new Moto();
+        this.ve2.setMatricula("2345BCD");
+        this.ve2.setMarca("Honda");
+        this.ve2.setModelo("CB1000R");
+        this.ve2.setColor("Rojo");
+        this.ve2.setPrecio(6000);
+        this.ve2.setCilindrada(998);
+        this.ve2.setTipoMotor("Motor de dos tiempos");
+        this.ve2.setBaul(false);
+
+        this.ve4 = new Moto();
+        this.ve4.setMatricula("9999BCD");
+        this.ve4.setMarca("Ducati");
+        this.ve4.setModelo("DesertX");
+        this.ve4.setColor("Blanco");
+        this.ve4.setPrecio(9000);
+        this.ve4.setCilindrada(937 );
+        this.ve4.setTipoMotor("Bicilíndrico en V a 90º");
+        this.ve4.setBaul(true);
+
+        this.listaVehiculos = new ArrayList<Vehiculo> ();
+        this.listaVehiculos.add(0,ve1);
+        this.listaVehiculos.add(1,ve2);
+        this.listaVehiculos.add(2,ve3);
+        this.listaVehiculos.add(3,ve4);
+    }
+	
+	public void creaClientesConVentas () {
+        this.creaClientesSueltos();
+        this.creaVentasSueltas();
+        this.c1.anadirVenta(vc1A);
+        this.c1.anadirVenta(vc1B);
+    }
+
+	public void creaVentasConVehiculos () {
+		this.creaClientesConVentas();
+		this.creaVehiculosSueltos();
+        this.vc1A.añadirVehiculo(this.ve1);
+        this.vc1A.añadirVehiculo(this.ve2);
+		this.vc1A.añadirVehiculo(this.ve3);
+		this.vc1B.añadirVehiculo(this.ve3);
+		this.vc1B.añadirVehiculo(this.ve4);
 	}
 	
-	public void creaUsuariosConEntradasLog () {
-
-		this.creaUsuariosSoltos();
-		this.creaEntradasLogSoltas();
-		
-        this.u1.engadirEntradaLog(this.e1A);
-        this.u1.engadirEntradaLog(this.e1B);
-
-	}
-	
-	public void gravaUsuarios() {
+	public void gravaClientes() {
 		EntityManager em=null;
 		try {
 			em = emf.createEntityManager();
 			em.getTransaction().begin();
 
-			Iterator<Usuario> itU = this.listaxeU.iterator();
-			while (itU.hasNext()) {
-				Usuario u = itU.next();
-				em.persist(u);
-				// DESCOMENTAR SE A PROPAGACION DO PERSIST NON ESTA ACTIVADA
-				/*
-				Iterator<EntradaLog> itEL = u.getEntradasLog().iterator();
-				while (itEL.hasNext()) {
-					em.persist(itEL.next());
-				}
-				*/
+			Iterator<Cliente> itC = this.listaClientes.iterator();
+			while (itC.hasNext()) {
+				Cliente c = itC.next();
+				em.persist(c);
 			}
 			em.getTransaction().commit();
 			em.close();
@@ -119,17 +157,14 @@ public class ProdutorDatosProba {
 			em = emf.createEntityManager();
 			em.getTransaction().begin();
 			
-			Iterator <Usuario> itU = em.createQuery("SELECT u from Usuario u", Usuario.class).getResultList().iterator();
-			while (itU.hasNext()) em.remove(itU.next());
-			/*
-			// Non é necesario porque establecemos  propagacion do remove
-			// Se desactivamos propagación, descomentar
-			Iterator <EntradaLog> itL = em.createQuery("SELECT e from EntradaLog e", EntradaLog.class).getResultList().iterator();
-			while (itL.hasNext()) em.remove(itL.next());		
-			*/
+			Iterator <Cliente> itC = em.createQuery("SELECT c from Cliente c", Cliente.class).getResultList().iterator();
+			while (itC.hasNext()) em.remove(itC.next());
+
+			Iterator <Vehiculo> itVe = em.createQuery("SELECT ve from Vehiculo ve", Vehiculo.class).getResultList().iterator();
+			while (itVe.hasNext()) em.remove(itVe.next());		
 			
-			em.createNativeQuery("UPDATE taboa_ids SET ultimo_valor_id=0 WHERE nome_id='idUsuario'" ).executeUpdate();
-			em.createNativeQuery("UPDATE taboa_ids SET ultimo_valor_id=0 WHERE nome_id='idEntradaLog'" ).executeUpdate();
+			em.createNativeQuery("UPDATE taboa_ids SET ultimo_valor_id=0 WHERE nome_id='idCliente'" ).executeUpdate();
+			em.createNativeQuery("UPDATE taboa_ids SET ultimo_valor_id=0 WHERE nome_id='idVehiculo'" ).executeUpdate();
 
 			em.getTransaction().commit();
 			em.close();
@@ -141,6 +176,5 @@ public class ProdutorDatosProba {
 			}
 		}
 	}
-	
 	
 }

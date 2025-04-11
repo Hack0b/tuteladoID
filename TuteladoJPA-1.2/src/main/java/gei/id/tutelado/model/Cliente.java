@@ -71,7 +71,7 @@ public class Cliente {
 		this.dni = dni;
 	}
 
-	public void setNome(String nombre) {
+	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
 
